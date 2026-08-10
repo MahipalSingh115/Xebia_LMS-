@@ -1,0 +1,14 @@
+export { default as ExecutiveSummary } from "./ExecutiveSummary";
+export { default as TrainingEffectiveness } from "./TrainingEffectiveness";
+export { default as ProjectLearningInvestment } from "./ProjectLearningInvestment";
+export { default as FresherJourney } from "./FresherJourney";
+export { default as SkillGap } from "./SkillGap";
+export { default as PredictiveAnalytics } from "./PredictiveAnalytics";
+export { default as LearningCoverage } from "./LearningCoverage";
+export { default as LearningHours } from "./LearningHours";
+export { default as LearningCategories } from "./LearningCategories";
+export { default as LearningTrends } from "./LearningTrends";
+export { default as AITransformation } from "./AITransformation";
+export { default as Certifications } from "./Certifications";
+export { default as FlagshipPrograms } from "./FlagshipPrograms";
+export { default as LearningChampions } from "./LearningChampions";

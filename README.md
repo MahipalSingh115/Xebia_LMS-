@@ -1,0 +1,68 @@
+# LMS-xebia-local
+
+A modern, high-fidelity Learning Management System (LMS) that simplifies curriculum organization and content mapping for students and instructors.
+
+## 🚀 Key Features
+
+- **Dynamic Category Management**: Highly customizable catalog groupings.
+  - **Visual Branding**: Define custom icons/emojis, visual tags, and theme accent colors.
+  - **Premium Emoji Picker**: Custom popover emoji selector featuring keyword search, category tabs, hover previews, and selection history.
+  - **Featured Promotions**: Highlight priority categories across dashboards.
+- **Dynamic SEO Scoring**: Sidebar widget computing real-time SEO health based on metadata configurations (meta title, description, focus keywords, open graph configuration).
+- **Curriculum & Course Builders**: Structure modules, difficulty levels, duration, and track enrollment numbers.
+- **Unified Analytics**: Dedicated dashboards for certifications, learning hours, flagship programs, and learning progress.
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Framework**: React 19 + Vite
+- **Styling**: Tailwind CSS + Custom Vanilla CSS
+- **Iconography**: Lucide React
+- **Routings**: React Router DOM v7
+
+### Backend
+- **Framework**: Spring Boot (Java)
+- **Database**: H2 / MySQL with Spring Data JPA
+- **Entity mapping**: MapStruct Mapper
+- **Security & APIs**: OpenAPI/Swagger Documentation
+
+---
+
+## 📂 Directory Layout
+
+```
+.
+├── backend/                   # Spring Boot application
+│   ├── src/main/java/         # Controllers, DTOs, Services, and Entities
+│   └── mvnw                   # Maven Wrapper executable
+│
+└── frontend/                  # React Vite application
+    ├── src/
+    │   ├── components/        # Category, course, and sharing widgets
+    │   ├── hooks/             # Custom state & interaction hooks (useCategories, etc.)
+    │   ├── pages/             # Dashboard, Listing, and Detail pages
+    │   └── services/          # HTTP client wrappers
+    ├── index.html
+    └── package.json
+```
+
+---
+
+## 💻 Setup & Execution
+
+### 1. Run the Backend
+Navigate to the `backend` directory and start the Spring Boot app:
+```bash
+./mvnw spring-boot:run
+```
+The REST API server will start on `http://localhost:8080`.
+
+### 2. Run the Frontend
+Navigate to the `frontend` directory, install package dependencies, and launch Vite dev server:
+```bash
+npm install
+npm run dev
+```
+Open your browser and navigate to `http://localhost:5173`.
