@@ -1,0 +1,19 @@
+$kind: http-request
+name: Get Unread Notification Count
+method: GET
+url: '{{baseUrl}}/api/notifications/unread-count'
+order: 2000
+queryParams:
+  - key: role
+    value: STUDENT
+  - key: userId
+    value: '{{studentId}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      pm.test("Response has count", () => {
+        const body = pm.response.json();
+        pm.expect(body).to.satisfy(b => typeof b === 'number' || b.count !== undefined || b.unreadCount !== undefined);
+      });

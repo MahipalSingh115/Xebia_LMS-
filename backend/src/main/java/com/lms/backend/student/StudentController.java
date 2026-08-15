@@ -55,4 +55,21 @@ public class StudentController {
         Student created = studentService.createStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(created));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Student>> updateStudent(@PathVariable String id, @RequestBody Student student) {
+        return studentService.updateStudent(id, student)
+                .map(updated -> ResponseEntity.ok(new ApiResponse<>(updated)))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Boolean>> deleteStudent(@PathVariable String id) {
+        boolean deleted = studentService.deleteStudent(id);
+        if (deleted) {
+            return ResponseEntity.ok(new ApiResponse<>(true));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }

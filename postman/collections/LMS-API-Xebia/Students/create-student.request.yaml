@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create Student
+method: POST
+url: '{{baseUrl}}/api/students'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"name":"Test Student","email":"teststudent@example.com","department":"Engineering"}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Student has id", () => pm.expect(pm.response.json()).to.have.property('id'));
+      pm.test("Email matches", () => pm.expect(pm.response.json().email).to.equal("teststudent@example.com"));
+      pm.environment.set("newStudentId", pm.response.json().id);

@@ -1,0 +1,19 @@
+$kind: http-request
+name: Create Module
+method: POST
+url: '{{baseUrl}}/api/modules'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"title":"Test Module","courseId":{{courseId}},"orderIndex":1}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Module has id", () => pm.expect(pm.response.json()).to.have.property('id'));
+      pm.environment.set("newModuleId", pm.response.json().id);

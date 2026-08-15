@@ -1,0 +1,22 @@
+$kind: http-request
+name: Create Category
+method: POST
+url: '{{baseUrl}}/api/categories'
+order: 3000
+body:
+  type: formdata
+  content:
+    - key: name
+      type: text
+      value: Test Category
+    - key: description
+      type: text
+      value: A test category created by Postman
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Created category has id", () => pm.expect(pm.response.json()).to.have.property('id'));
+      pm.test("Name matches", () => pm.expect(pm.response.json().name).to.equal("Test Category"));
+      pm.environment.set("newCategoryId", pm.response.json().id);

@@ -1,0 +1,18 @@
+$kind: http-request
+name: Update Course
+method: PUT
+url: '{{baseUrl}}/api/courses/{{newCourseId}}'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"title":"Updated Course Title"}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      pm.test("Title updated", () => pm.expect(pm.response.json().title).to.equal("Updated Course Title"));

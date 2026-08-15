@@ -1,0 +1,14 @@
+$kind: http-request
+name: Get All Modules
+method: GET
+url: '{{baseUrl}}/api/modules'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      pm.test("Response is array", () => pm.expect(pm.response.json()).to.be.an('array'));
+      if (pm.response.json().length > 0) {
+        pm.environment.set("moduleId", pm.response.json()[0].id);
+      }

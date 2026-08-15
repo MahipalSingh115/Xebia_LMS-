@@ -1,0 +1,15 @@
+$kind: http-request
+name: Get All Submissions
+method: GET
+url: '{{baseUrl}}/api/submissions'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      const body = pm.response.json();
+      pm.test("Response is array or paginated", () => pm.expect(body).to.satisfy(b => Array.isArray(b) || typeof b === 'object'));
+      if (Array.isArray(body) && body.length > 0) {
+        pm.environment.set("submissionId", body[0].id);
+      }

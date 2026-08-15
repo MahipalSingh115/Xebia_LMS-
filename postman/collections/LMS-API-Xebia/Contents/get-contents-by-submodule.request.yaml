@@ -1,0 +1,14 @@
+$kind: http-request
+name: Get Contents By SubModule
+method: GET
+url: '{{baseUrl}}/api/contents'
+order: 2000
+queryParams:
+  - key: subModuleId
+    value: '{{subModuleId}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      pm.test("Response is array", () => pm.expect(pm.response.json()).to.be.an('array'));

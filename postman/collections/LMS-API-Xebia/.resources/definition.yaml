@@ -1,0 +1,9 @@
+$kind: collection
+name: LMS API - Xebia
+description: "Complete API test collection for the LMS Xebia platform. Covers all domains: Categories, Courses, Modules, SubModules, Contents, Students, Trainers, Batches, Assessments, Assignments, Quizzes, Submissions, Events, Notifications, Dashboard, and Analytics."
+variables:
+  baseUrl: http://localhost:8080
+  categoryId: ""
+  courseId: ""
+  assignment_id: ""
+  assignmentId: ""

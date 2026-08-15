@@ -46,4 +46,16 @@ public class AssessmentController {
     public ApiResponse<Map<String, Object>> getStats() {
         return new ApiResponse<>(service.getAssessmentStats());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Assessment>> updateAssessment(@PathVariable Long id, @RequestBody Assessment assessment) {
+        Assessment updated = service.updateAssessment(id, assessment);
+        return ResponseEntity.ok(new ApiResponse<>(updated));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteAssessment(@PathVariable Long id) {
+        service.deleteAssessment(id);
+        return ResponseEntity.ok(new ApiResponse<>(null));
+    }
 }

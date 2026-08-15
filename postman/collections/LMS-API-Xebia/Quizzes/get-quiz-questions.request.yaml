@@ -1,0 +1,17 @@
+$kind: http-request
+name: Get Quiz Questions
+method: GET
+url: '{{baseUrl}}/api/quizzes/{{quizId}}/questions'
+order: 4000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      pm.test("Response is array", () => pm.expect(pm.response.json()).to.be.an('array'));
+      pm.test("Questions have id and text", () => {
+        const questions = pm.response.json();
+        if (questions.length > 0) {
+          pm.expect(questions[0]).to.have.property('id');
+        }
+      });

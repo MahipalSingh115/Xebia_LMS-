@@ -87,4 +87,19 @@ public class StudentService {
         stats.put("completedStudents", studentRepository.countByStatus("Completed"));
         return stats;
     }
+
+    public Optional<Student> updateStudent(String id, Student student) {
+        return studentRepository.findById(id).map(existing -> {
+            student.setId(id);
+            return studentRepository.save(student);
+        });
+    }
+
+    public boolean deleteStudent(String id) {
+        if (studentRepository.existsById(id)) {
+            studentRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

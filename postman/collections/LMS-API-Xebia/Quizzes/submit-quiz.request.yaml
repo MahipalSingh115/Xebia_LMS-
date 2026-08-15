@@ -1,0 +1,21 @@
+$kind: http-request
+name: Submit Quiz
+method: POST
+url: '{{baseUrl}}/api/quizzes/{{quizId}}/submit'
+order: 6000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"studentId":{{studentId}},"answers":[]}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Result has score or verdict", () => {
+        const body = pm.response.json();
+        pm.expect(body).to.satisfy(b => b.score !== undefined || b.verdict !== undefined || b.status !== undefined);
+      });

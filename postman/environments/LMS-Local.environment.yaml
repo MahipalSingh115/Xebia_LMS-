@@ -1,0 +1,77 @@
+name: LMS Local
+values:
+  - key: baseUrl
+    value: 'http://localhost:8080'
+    enabled: true
+  - key: courseId
+    value: ''
+    enabled: true
+  - key: newCourseId
+    value: ''
+    enabled: true
+  - key: categoryId
+    value: ''
+    enabled: true
+  - key: newCategoryId
+    value: ''
+    enabled: true
+  - key: moduleId
+    value: ''
+    enabled: true
+  - key: newModuleId
+    value: ''
+    enabled: true
+  - key: subModuleId
+    value: ''
+    enabled: true
+  - key: newSubModuleId
+    value: ''
+    enabled: true
+  - key: newContentId
+    value: ''
+    enabled: true
+  - key: studentId
+    value: ''
+    enabled: true
+  - key: newStudentId
+    value: ''
+    enabled: true
+  - key: trainerId
+    value: ''
+    enabled: true
+  - key: newTrainerId
+    value: ''
+    enabled: true
+  - key: batchId
+    value: ''
+    enabled: true
+  - key: newBatchId
+    value: ''
+    enabled: true
+  - key: assignmentId
+    value: ''
+    enabled: true
+  - key: newAssignmentId
+    value: ''
+    enabled: true
+  - key: quizId
+    value: ''
+    enabled: true
+  - key: newQuizId
+    value: ''
+    enabled: true
+  - key: submissionId
+    value: ''
+    enabled: true
+  - key: newSubmissionId
+    value: ''
+    enabled: true
+  - key: eventId
+    value: ''
+    enabled: true
+  - key: newEventId
+    value: ''
+    enabled: true
+  - key: notificationId
+    value: ''
+    enabled: true

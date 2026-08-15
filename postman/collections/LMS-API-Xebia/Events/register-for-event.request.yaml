@@ -1,0 +1,21 @@
+$kind: http-request
+name: Register For Event
+method: POST
+url: '{{baseUrl}}/api/events/{{eventId}}/register'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"studentId":{{studentId}}}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Registration confirmed", () => {
+        const body = pm.response.json();
+        pm.expect(body).to.satisfy(b => b.id !== undefined || b.message !== undefined || b.status !== undefined);
+      });

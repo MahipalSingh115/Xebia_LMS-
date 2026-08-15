@@ -1,0 +1,17 @@
+$kind: http-request
+name: Update Category
+method: PUT
+url: '{{baseUrl}}/api/categories/{{newCategoryId}}'
+order: 4000
+body:
+  type: formdata
+  content:
+    - key: name
+      type: text
+      value: Updated Category
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      pm.test("Name updated", () => pm.expect(pm.response.json().name).to.equal("Updated Category"));

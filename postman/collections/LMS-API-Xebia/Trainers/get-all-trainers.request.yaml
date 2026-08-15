@@ -1,0 +1,16 @@
+$kind: http-request
+name: Get All Trainers
+method: GET
+url: '{{baseUrl}}/api/trainers'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      const body = pm.response.json();
+      const list = Array.isArray(body) ? body : (body.content || body.data || []);
+      if (list.length > 0) {
+        pm.test("Trainer has id", () => pm.expect(list[0]).to.have.property('id'));
+        pm.environment.set("trainerId", list[0].id);
+      }

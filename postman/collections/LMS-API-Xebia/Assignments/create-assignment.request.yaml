@@ -1,0 +1,19 @@
+$kind: http-request
+name: Create Assignment
+method: POST
+url: '{{baseUrl}}/api/assignments'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"title":"Test Assignment","description":"Submit your work","dueDate":"2025-12-31","courseId":{{courseId}}}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Assignment has id", () => pm.expect(pm.response.json()).to.have.property('id'));
+      pm.environment.set("newAssignmentId", pm.response.json().id);

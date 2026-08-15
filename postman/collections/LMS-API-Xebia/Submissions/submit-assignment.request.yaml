@@ -1,0 +1,19 @@
+$kind: http-request
+name: Submit Assignment
+method: POST
+url: '{{baseUrl}}/api/student/{{studentId}}/submit'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"assignmentId":{{assignmentId}},"submissionText":"My assignment answer"}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Submission has id", () => pm.expect(pm.response.json()).to.have.property('id'));
+      pm.environment.set("newSubmissionId", pm.response.json().id);

@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete Course
+method: DELETE
+url: '{{baseUrl}}/api/courses/{{newCourseId}}'
+order: 5000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 204", () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));

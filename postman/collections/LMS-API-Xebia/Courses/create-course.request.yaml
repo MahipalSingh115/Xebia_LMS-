@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create Course
+method: POST
+url: '{{baseUrl}}/api/courses'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"title":"Postman Test Course","description":"Created via Postman","duration":10}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Course has id", () => pm.expect(pm.response.json()).to.have.property('id'));
+      pm.test("Title matches", () => pm.expect(pm.response.json().title).to.equal("Postman Test Course"));
+      pm.environment.set("newCourseId", pm.response.json().id);

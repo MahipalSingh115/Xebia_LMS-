@@ -41,4 +41,20 @@ public class AssessmentService {
         stats.put("avgPassScore", 78.5); // static or derived
         return stats;
     }
+
+    public Assessment updateAssessment(Long id, Assessment assessment) {
+        if (repository.existsById(id)) {
+            assessment.setId(id);
+            return repository.save(assessment);
+        }
+        throw new com.lms.backend.exception.ResourceNotFoundException("Assessment not found");
+    }
+
+    public void deleteAssessment(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new com.lms.backend.exception.ResourceNotFoundException("Assessment not found");
+        }
+    }
 }

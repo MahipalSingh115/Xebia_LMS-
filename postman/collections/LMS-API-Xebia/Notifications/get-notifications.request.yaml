@@ -1,0 +1,21 @@
+$kind: http-request
+name: Get Notifications
+method: GET
+url: '{{baseUrl}}/api/notifications'
+order: 1000
+queryParams:
+  - key: role
+    value: STUDENT
+  - key: userId
+    value: '{{studentId}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      const body = pm.response.json();
+      pm.test("Response is array or paginated", () => pm.expect(body).to.satisfy(b => Array.isArray(b) || typeof b === 'object'));
+      const list = Array.isArray(body) ? body : (body.content || body.data || []);
+      if (list.length > 0) {
+        pm.environment.set("notificationId", list[0].id);
+      }

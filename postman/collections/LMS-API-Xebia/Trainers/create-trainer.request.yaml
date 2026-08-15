@@ -1,0 +1,19 @@
+$kind: http-request
+name: Create Trainer
+method: POST
+url: '{{baseUrl}}/api/trainers'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {"name":"Test Trainer","email":"testtrainer@example.com","specialization":"Java"}
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 201", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));
+      pm.test("Trainer has id", () => pm.expect(pm.response.json()).to.have.property('id'));
+      pm.environment.set("newTrainerId", pm.response.json().id);

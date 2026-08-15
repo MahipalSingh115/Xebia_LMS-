@@ -1,0 +1,21 @@
+$kind: http-request
+name: Get All Students
+method: GET
+url: '{{baseUrl}}/api/students'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      const body = pm.response.json();
+      pm.test("Response is array or paginated", () => {
+        pm.expect(body).to.satisfy(b => Array.isArray(b) || (typeof b === 'object' && b !== null));
+      });
+      const list = Array.isArray(body) ? body : (body.content || body.data || []);
+      if (list.length > 0) {
+        pm.test("Student has id and name", () => {
+          pm.expect(list[0]).to.have.property('id');
+        });
+        pm.environment.set("studentId", list[0].id);
+      }

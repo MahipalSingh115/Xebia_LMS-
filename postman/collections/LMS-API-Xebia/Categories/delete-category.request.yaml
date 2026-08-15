@@ -1,0 +1,10 @@
+$kind: http-request
+name: Delete Category
+method: DELETE
+url: '{{baseUrl}}/api/categories/{{newCategoryId}}'
+order: 5000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200 or 204", () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));

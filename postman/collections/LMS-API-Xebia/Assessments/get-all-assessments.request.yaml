@@ -1,0 +1,12 @@
+$kind: http-request
+name: Get All Assessments
+method: GET
+url: '{{baseUrl}}/api/assessments'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      const body = pm.response.json();
+      pm.test("Response is object or array", () => pm.expect(body).to.satisfy(b => typeof b === 'object' && b !== null));

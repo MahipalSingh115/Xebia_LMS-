@@ -1,0 +1,11 @@
+$kind: http-request
+name: Get Skill Gap Dashboard
+method: GET
+url: '{{baseUrl}}/api/analytics/skill-gap/dashboard'
+order: 3000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status is 200", () => pm.response.to.have.status(200));
+      pm.test("Response is an object", () => pm.expect(pm.response.json()).to.be.an('object'));
