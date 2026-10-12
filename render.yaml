@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: lms-xebia-local
+    runtime: docker
+    region: singapore
+    plan: free
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-db6fbjrrjlhs738a7g30-a.singapore-postgres.render.com:5432/lms_postgres_db_be7g?sslmode=require
+      - key: SPRING_DATASOURCE_USERNAME
+        value: lms_postgres_db_be7g_user
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: xkJXZIPzAF98aGwgRFclMtpHYn4tdXop
