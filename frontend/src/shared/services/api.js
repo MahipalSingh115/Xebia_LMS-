@@ -1,7 +1,16 @@
 import axios from "axios";
 
+const getBaseUrl = () => {
+    let raw = (import.meta.env.VITE_API_URL || "https://xebia-lms-r0cg.onrender.com/api").trim();
+    raw = raw.replace(/\/+$/, "");
+    if (!raw.endsWith("/api")) {
+        raw = `${raw}/api`;
+    }
+    return raw;
+};
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: getBaseUrl(),
     headers: {
         "Content-Type": "application/json"
     },

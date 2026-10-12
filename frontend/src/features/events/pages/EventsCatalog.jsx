@@ -78,7 +78,9 @@ export default function EventsCatalog() {
   const getEventImageUrl = (url) => {
     if (!url) return "";
     if (url.startsWith("/uploads/")) {
-      const backendHost = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:8080";
+      const backendHost = (import.meta.env.VITE_API_URL || "https://xebia-lms-r0cg.onrender.com")
+        .replace(/\/api\/?$/, "")
+        .replace(/\/+$/, "");
       return `${backendHost}${url}`;
     }
     return url;
