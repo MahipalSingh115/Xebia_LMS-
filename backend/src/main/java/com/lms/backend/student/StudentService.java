@@ -22,7 +22,20 @@ public class StudentService {
 
     @PostConstruct
     public void seedStudents() {
-        // Seeding disabled to clean up dummy data
+        if (!studentRepository.existsById("s4")) {
+            Student s = new Student(
+                "s4", 
+                "Jane Doe", 
+                "Batch 3", 
+                "Active", 
+                "student@xebia.com", 
+                "CSE", 
+                "Advanced UI Design", 
+                78, 
+                "32"
+            );
+            studentRepository.save(s);
+        }
     }
 
     private org.springframework.data.jpa.domain.Specification<Student> getSpec(String query, String dept, String batch) {

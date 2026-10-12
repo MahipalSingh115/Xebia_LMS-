@@ -172,6 +172,8 @@ function App() {
 
       {/* Trainer/Manager Routes */}
       <Route path="/trainer" element={<TrainerDashboard />} />
+      <Route path="/trainer/courses" element={<Courses />} />
+      <Route path="/trainer/courses/:id/curriculum" element={<CurriculumBuilder />} />
       <Route path="/trainer/assignments" element={<ManagerAssignmentDashboard />} />
       <Route path="/trainer/assignments/create" element={<CreateAssignment />} />
       <Route path="/trainer/assignments/edit/:id" element={<CreateAssignment />} />
@@ -197,7 +199,7 @@ function App() {
         <Route path="courses/:courseId/modules/:moduleId/lessons/:lessonId" element={<StudentLessonDetail />} />
         <Route path="calendar" element={<StudentCalendar />} />
         <Route path="assessments" element={<StudentAssessments />} />
-        <Route path="assignments" element={<StudentAssessments />} />
+        <Route path="assignments" element={<StudentAssignmentDashboard />} />
         <Route path="assignments/:id" element={<StudentAssignmentDetails />} />
         <Route path="assignments/:id/submissions" element={<StudentMySubmissions />} />
         <Route path="assignments/:id/result" element={<StudentAssignmentResult />} />

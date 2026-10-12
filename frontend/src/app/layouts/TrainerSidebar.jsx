@@ -18,6 +18,7 @@ const STORAGE_KEY = "lms-trainer-sidebar-collapsed";
 /* ─── Menu Configuration ─── */
 const MAIN_MENU = [
   { title: "Dashboard",    path: "/trainer",              icon: LayoutDashboard },
+  { title: "Courses",      path: "/trainer/courses",      icon: GraduationCap },
   { title: "Assignments",  path: "/trainer/assignments",  icon: BookOpen },
   { title: "Quizzes",      path: "/trainer/quizzes",      icon: HelpCircle },
   { title: "Batches",      path: "/trainer/batches",      icon: Layers },

@@ -29,28 +29,38 @@ export default function CoursesTableRow({
   const diffCls   = DIFF_BADGE[course.difficulty] ?? DIFF_BADGE.Intermediate;
   const catCls    = getCatBadge(course.category);
 
-  const menuItems = [
-    { icon: Pencil,   label: "Edit Course",  action: () => { navigate(`/courses/${course.id}/edit`); onCloseDropdown(); } },
-    { icon: Eye,      label: "Preview",      action: () => onCloseDropdown() },
-    { icon: Layers,   label: "Curriculum",   action: () => { navigate(`/courses/${course.id}/curriculum`); onCloseDropdown(); } },
-    { icon: BarChart, label: "Analytics",    action: () => onCloseDropdown() },
-    { icon: Copy,     label: "Duplicate",    action: () => onCloseDropdown() },
-    null,
-    { icon: Trash2,   label: "Delete",       danger: true, action: () => { onDeleteTarget(course); onCloseDropdown(); } },
-  ];
+  const isTrainer = window.location.pathname.startsWith("/trainer");
+
+  const menuItems = isTrainer
+    ? [
+        { icon: Eye,      label: "Preview",      action: () => onCloseDropdown() },
+        { icon: Layers,   label: "Curriculum",   action: () => { navigate(`/trainer/courses/${course.id}/curriculum`); onCloseDropdown(); } },
+        { icon: BarChart, label: "Analytics",    action: () => onCloseDropdown() },
+      ]
+    : [
+        { icon: Pencil,   label: "Edit Course",  action: () => { navigate(`/courses/${course.id}/edit`); onCloseDropdown(); } },
+        { icon: Eye,      label: "Preview",      action: () => onCloseDropdown() },
+        { icon: Layers,   label: "Curriculum",   action: () => { navigate(`/courses/${course.id}/curriculum`); onCloseDropdown(); } },
+        { icon: BarChart, label: "Analytics",    action: () => onCloseDropdown() },
+        { icon: Copy,     label: "Duplicate",    action: () => onCloseDropdown() },
+        null,
+        { icon: Trash2,   label: "Delete",       danger: true, action: () => { onDeleteTarget(course); onCloseDropdown(); } },
+      ];
 
   return (
     <tr className={`transition-colors hover:bg-slate-50/60 ${isSelected ? "bg-[#fafaff]" : ""}`}>
       {/* Checkbox */}
       <td className="w-9 pl-4 py-3">
-        <div
-          className={`w-[15px] h-[15px] rounded-[3px] border flex items-center justify-center cursor-pointer ${
-            isSelected ? "bg-[#6C1D5F] border-[#6C1D5F]" : "border-slate-300 bg-white hover:border-[#6C1D5F]"
-          }`}
-          onClick={() => onToggleSelect(course.id)}
-        >
-          {isSelected && <CheckCircle size={9} className="text-white" />}
-        </div>
+        {!isTrainer && (
+          <div
+            className={`w-[15px] h-[15px] rounded-[3px] border flex items-center justify-center cursor-pointer ${
+              isSelected ? "bg-[#6C1D5F] border-[#6C1D5F]" : "border-slate-300 bg-white hover:border-[#6C1D5F]"
+            }`}
+            onClick={() => onToggleSelect(course.id)}
+          >
+            {isSelected && <CheckCircle size={9} className="text-white" />}
+          </div>
+        )}
       </td>
 
       {/* ID */}

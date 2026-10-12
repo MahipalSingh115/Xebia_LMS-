@@ -65,20 +65,22 @@ export default function CoursesTableView({
             <tr>
               {/* Select-all checkbox */}
               <th className="w-9 pl-4 py-2.5">
-                <div
-                  className={`w-[15px] h-[15px] rounded-[3px] border flex items-center justify-center cursor-pointer ${
-                    allSelected || someSelected
-                      ? "bg-[#6C1D5F] border-[#6C1D5F]"
-                      : "border-slate-300 bg-white"
-                  }`}
-                  onClick={onToggleAll}
-                >
-                  {(allSelected || someSelected) && (
-                    someSelected && !allSelected
-                      ? <Minus size={9} className="text-white" />
-                      : <CheckCircle size={9} className="text-white" />
-                  )}
-                </div>
+                {!window.location.pathname.startsWith("/trainer") && (
+                  <div
+                    className={`w-[15px] h-[15px] rounded-[3px] border flex items-center justify-center cursor-pointer ${
+                      allSelected || someSelected
+                        ? "bg-[#6C1D5F] border-[#6C1D5F]"
+                        : "border-slate-300 bg-white"
+                    }`}
+                    onClick={onToggleAll}
+                  >
+                    {(allSelected || someSelected) && (
+                      someSelected && !allSelected
+                        ? <Minus size={9} className="text-white" />
+                        : <CheckCircle size={9} className="text-white" />
+                    )}
+                  </div>
+                )}
               </th>
 
               {/* Column headers */}

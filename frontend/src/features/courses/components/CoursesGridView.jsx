@@ -75,37 +75,52 @@ export default function CoursesGridView({
             const diffCls = DIFF_BADGE[course.difficulty] ?? DIFF_BADGE.Intermediate;
             const catCls = getCatBadge(course.category);
 
-            const menuItems = [
-              {
-                icon: Pencil,
-                label: "Edit Course",
-                action: () => {
-                  navigate(`/courses/${course.id}/edit`);
-                  onCloseDropdown();
-                },
-              },
-              { icon: Eye, label: "Preview", action: () => onCloseDropdown() },
-              {
-                icon: Layers,
-                label: "Curriculum",
-                action: () => {
-                  navigate(`/courses/${course.id}/curriculum`);
-                  onCloseDropdown();
-                },
-              },
-              { icon: BarChart, label: "Analytics", action: () => onCloseDropdown() },
-              { icon: Copy, label: "Duplicate", action: () => onCloseDropdown() },
-              null,
-              {
-                icon: Trash2,
-                label: "Delete",
-                danger: true,
-                action: () => {
-                  onDeleteTarget(course);
-                  onCloseDropdown();
-                },
-              },
-            ];
+            const isTrainer = window.location.pathname.startsWith("/trainer");
+
+            const menuItems = isTrainer
+              ? [
+                  { icon: Eye, label: "Preview", action: () => onCloseDropdown() },
+                  {
+                    icon: Layers,
+                    label: "Curriculum",
+                    action: () => {
+                      navigate(`/trainer/courses/${course.id}/curriculum`);
+                      onCloseDropdown();
+                    },
+                  },
+                  { icon: BarChart, label: "Analytics", action: () => onCloseDropdown() },
+                ]
+              : [
+                  {
+                    icon: Pencil,
+                    label: "Edit Course",
+                    action: () => {
+                      navigate(`/courses/${course.id}/edit`);
+                      onCloseDropdown();
+                    },
+                  },
+                  { icon: Eye, label: "Preview", action: () => onCloseDropdown() },
+                  {
+                    icon: Layers,
+                    label: "Curriculum",
+                    action: () => {
+                      navigate(`/courses/${course.id}/curriculum`);
+                      onCloseDropdown();
+                    },
+                  },
+                  { icon: BarChart, label: "Analytics", action: () => onCloseDropdown() },
+                  { icon: Copy, label: "Duplicate", action: () => onCloseDropdown() },
+                  null,
+                  {
+                    icon: Trash2,
+                    label: "Delete",
+                    danger: true,
+                    action: () => {
+                      onDeleteTarget(course);
+                      onCloseDropdown();
+                    },
+                  },
+                ];
 
             return (
               <div
@@ -122,14 +137,16 @@ export default function CoursesGridView({
                     className="w-full h-full object-cover"
                   />
                   {/* Overlay Selection Checkbox */}
-                  <div
-                    onClick={() => onToggleSelect(course.id)}
-                    className={`absolute top-2.5 left-2.5 w-[18px] h-[18px] rounded-[4px] border flex items-center justify-center cursor-pointer shadow-sm transition-all ${
-                      isSelected ? "bg-[#6C1D5F] border-[#6C1D5F]" : "border-slate-300 bg-white/90 hover:bg-white hover:border-[#6C1D5F]"
-                    }`}
-                  >
-                    {isSelected && <CheckCircle size={10} className="text-white" />}
-                  </div>
+                  {!isTrainer && (
+                    <div
+                      onClick={() => onToggleSelect(course.id)}
+                      className={`absolute top-2.5 left-2.5 w-[18px] h-[18px] rounded-[4px] border flex items-center justify-center cursor-pointer shadow-sm transition-all ${
+                        isSelected ? "bg-[#6C1D5F] border-[#6C1D5F]" : "border-slate-300 bg-white/90 hover:bg-white hover:border-[#6C1D5F]"
+                      }`}
+                    >
+                      {isSelected && <CheckCircle size={10} className="text-white" />}
+                    </div>
+                  )}
 
                   {/* Overlay Featured Star */}
                   <button

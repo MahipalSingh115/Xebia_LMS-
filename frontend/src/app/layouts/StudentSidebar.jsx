@@ -12,6 +12,7 @@ import {
   PanelLeftOpen,
   Download,
   Sparkles,
+  FileText,
 } from "lucide-react";
 
 /* ─── Storage Key ─── */
@@ -23,6 +24,7 @@ const MAIN_MENU = [
   { title: "Courses",      path: "/student/courses",      icon: BookOpen },
   { title: "Calendar",     path: "/student/calendar",     icon: Calendar },
   { title: "Events",       path: "/student/events",       icon: Calendar },
+  { title: "Assignments",  path: "/student/assignments",  icon: FileText },
   { title: "Assessments",  path: "/student/assessments",  icon: ClipboardList },
   { title: "Grades",       path: "/student/grades",       icon: Award },
   { title: "Analytics",    path: "/student/analytics",    icon: BarChart3 },

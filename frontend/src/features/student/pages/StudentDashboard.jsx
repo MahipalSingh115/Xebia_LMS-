@@ -14,6 +14,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import courseService from "@/features/courses/services/courseService";
+import assignmentService from "@/features/assignments/services/assignmentService";
 import { Badge } from "@/shared/components/ui/badge";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
@@ -23,19 +24,66 @@ export default function StudentDashboard() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({ pending: 0, submitted: 0, reviewed: 0, overdue: 0, lateSubmitted: 0 });
+  const [activities, setActivities] = useState([]);
+
+  const studentId = "s4";
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchData = async () => {
       try {
-        const data = await courseService.getAllCourses();
-        setCourses(data || []);
+        setLoading(true);
+        const [coursesData, statsData, subsData] = await Promise.all([
+          courseService.getAllCourses(),
+          assignmentService.getStudentAssignmentStats(studentId),
+          assignmentService.getStudentSubmissions(studentId)
+        ]);
+
+        setCourses(coursesData || []);
+        if (statsData) {
+          setStats(statsData);
+        }
+
+        // Generate dynamic timeline from submissions
+        if (subsData && subsData.length > 0) {
+          const mapped = subsData.map(sub => {
+            let title = "Assignment Submitted";
+            let detail = sub.assignmentTitle;
+            let colorClass = "bg-emerald-500";
+            if (sub.status === "Graded") {
+              title = "New Grade Posted";
+              detail = `${sub.assignmentTitle} (Score: ${sub.score})`;
+              colorClass = "bg-[#6C1D5F]";
+            } else if (sub.status === "Revision Needed" || sub.status === "Revision") {
+              title = "Revision Requested";
+              detail = sub.assignmentTitle;
+              colorClass = "bg-rose-500";
+            }
+            return {
+              id: sub.id,
+              time: sub.submittedAt || "Recently",
+              title,
+              detail,
+              colorClass
+            };
+          });
+          // Sort by time/id desc, show up to 3
+          setActivities(mapped.slice(0, 3));
+        } else {
+          // Fallback to static items if no submissions exist yet
+          setActivities([
+            { id: "1", time: "2 hours ago", title: "Assignment Submitted", detail: "AI Ethics Case Study", colorClass: "bg-emerald-500" },
+            { id: "2", time: "Yesterday", title: "New Grade Posted", detail: "Data Visualization (Score: A)", colorClass: "bg-[#6C1D5F]" },
+            { id: "3", time: "Oct 22, 2023", title: "Announcement", detail: "Mid-term exam results published next week", colorClass: "bg-amber-500" }
+          ]);
+        }
       } catch (err) {
-        console.error("Failed to load student courses:", err);
+        console.error("Failed to load student dashboard data:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchCourses();
+    fetchData();
   }, []);
 
   return (
@@ -115,7 +163,7 @@ export default function StudentDashboard() {
         </Card>
 
         {/* Pending Tasks */}
-        <Card className="bg-white border-slate-200/70 shadow-sm hover:shadow-md transition-all h-[135px]">
+        <Card className="bg-white border-slate-200/70 shadow-sm hover:shadow-md transition-all h-[135px] cursor-pointer" onClick={() => navigate("/student/assignments")}>
           <CardContent className="p-5 flex flex-col justify-between h-full">
             <div className="flex items-center justify-between w-full">
               <span className="text-[12px] font-bold text-slate-400 uppercase tracking-wider">Pending Tasks</span>
@@ -124,8 +172,12 @@ export default function StudentDashboard() {
               </div>
             </div>
             <div>
-              <h3 className="text-2xl font-extrabold text-slate-800 tracking-tight">4</h3>
-              <p className="text-[11px] text-amber-600 font-semibold mt-1">2 due this week</p>
+              <h3 className="text-2xl font-extrabold text-slate-800 tracking-tight">
+                {loading ? "..." : (stats.pending + stats.overdue)}
+              </h3>
+              <p className="text-[11px] text-amber-600 font-semibold mt-1">
+                {stats.overdue > 0 ? `${stats.overdue} overdue task(s)` : "Up to date"}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -191,29 +243,14 @@ export default function StudentDashboard() {
           </div>
 
           <div className="relative border-l-2 border-slate-100 pl-4 ml-2 space-y-5 py-2 flex-1">
-            {/* Item 1 */}
-            <div className="relative space-y-0.5">
-              <div className="absolute w-3 h-3 bg-emerald-500 rounded-full -left-[22px] top-1.5 border-2 border-white shadow-sm" />
-              <span className="text-[10px] font-bold text-slate-400">2 hours ago</span>
-              <p className="text-[12px] font-bold text-slate-700">Assignment Submitted</p>
-              <p className="text-[11px] text-slate-400">AI Ethics Case Study</p>
-            </div>
-
-            {/* Item 2 */}
-            <div className="relative space-y-0.5">
-              <div className="absolute w-3 h-3 bg-[#6C1D5F] rounded-full -left-[22px] top-1.5 border-2 border-white shadow-sm" />
-              <span className="text-[10px] font-bold text-slate-400">Yesterday</span>
-              <p className="text-[12px] font-bold text-slate-700">New Grade Posted</p>
-              <p className="text-[11px] text-slate-400">Data Visualization (Score: A)</p>
-            </div>
-
-            {/* Item 3 */}
-            <div className="relative space-y-0.5">
-              <div className="absolute w-3 h-3 bg-amber-500 rounded-full -left-[22px] top-1.5 border-2 border-white shadow-sm" />
-              <span className="text-[10px] font-bold text-slate-400">Oct 22, 2023</span>
-              <p className="text-[12px] font-bold text-slate-700">Announcement</p>
-              <p className="text-[11px] text-slate-400">Mid-term exam results published next week</p>
-            </div>
+            {activities.map((act) => (
+              <div key={act.id} className="relative space-y-0.5">
+                <div className={`absolute w-3 h-3 ${act.colorClass} rounded-full -left-[22px] top-1.5 border-2 border-white shadow-sm`} />
+                <span className="text-[10px] font-bold text-slate-400">{act.time}</span>
+                <p className="text-[12px] font-bold text-slate-700">{act.title}</p>
+                <p className="text-[11px] text-slate-400">{act.detail}</p>
+              </div>
+            ))}
           </div>
 
           <Button
