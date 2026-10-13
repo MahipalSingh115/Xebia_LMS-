@@ -66,7 +66,7 @@ export default function StatsGrid() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  async function load() {
+  async function load(isRetry = false) {
     try {
       setLoading(true);
       setError(false);
@@ -74,6 +74,11 @@ export default function StatsGrid() {
       setStats(data);
     } catch (err) {
       console.error("Failed to load dashboard stats:", err);
+      // Auto-retry once after 4 seconds to gracefully handle Render free-tier wake up
+      if (!isRetry) {
+        setTimeout(() => load(true), 4000);
+        return;
+      }
       setError(true);
     } finally {
       setLoading(false);
@@ -106,9 +111,9 @@ export default function StatsGrid() {
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-xl p-5 text-center flex flex-col items-center justify-center gap-2">
-        <span className="text-[13px] font-semibold text-red-700">Failed to load statistics.</span>
+        <span className="text-[13px] font-semibold text-red-700">Failed to load statistics. Backend server may be waking up.</span>
         <button
-          onClick={load}
+          onClick={() => load(false)}
           className="px-3.5 py-1.5 rounded-md text-[12px] font-bold text-white bg-[#6C1D5F] hover:bg-[#4A1E47] transition-colors cursor-pointer"
         >
           Retry

@@ -40,7 +40,7 @@ export default function RecentCoursesTable() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function load() {
+    async function load(isRetry = false) {
       try {
         const data = await dashboardService.getRecentCourses();
         if (data) {
@@ -48,6 +48,10 @@ export default function RecentCoursesTable() {
         }
       } catch (err) {
         console.error("Failed to load recent courses:", err);
+        if (!isRetry) {
+          setTimeout(() => load(true), 4000);
+          return;
+        }
       } finally {
         setLoading(false);
       }
